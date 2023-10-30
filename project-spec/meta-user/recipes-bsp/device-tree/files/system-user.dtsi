@@ -1,0 +1,30 @@
+/include/ "system-conf.dtsi"
+/ {
+};
+/{
+  usb_phy0: usb_phy@0 {
+  compatible = "ulpi-phy";
+  #phy-cells = <0>;
+  reg = <0xe0002000 0x1000>;
+  view-port = <0x0170>;
+  reset-gpios = <&gpio0 46 1>;
+  drv-vbus;
+ };
+};
+&usb0 {
+ dr_mode = "host";
+ usb-phy = <&usb_phy0>;
+};
+ &amba_pl{
+    axidma_chrdev: axidma_chrdev@0 {
+            compatible = "xlnx,axidma-chrdev";
+            dmas = <&axi_dma_0 0 &axi_dma_0 1>;
+            dma-names = "tx_channel", "rx_channel";
+    };};
+ &axi_dma_0{
+    dma-channel@41e00000 {
+        xlnx,device-id = <0x0>;
+    };
+    dma-channel@41e00030 {
+        xlnx,device-id = <0x1>;
+    };};
